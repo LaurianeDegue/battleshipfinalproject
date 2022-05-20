@@ -15,12 +15,13 @@ public class Ship {
             Rectangle shipPart = new Rectangle();
 
             ship.getChildren().add(shipPart);
+
         }
 
     }
 
     public void shipHit (){
-        health--;
+        hp--;
     }
 
     public boolean isAlive(){
