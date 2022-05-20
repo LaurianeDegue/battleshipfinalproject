@@ -11,6 +11,11 @@ public class Ship {
         hp = len;
 
         VBox ship = new VBox();
+        for (int b=0;b > length; b++){
+            Rectangle shipPart = new Rectangle();
+
+            ship.getChildren().add(shipPart);
+        }
 
     }
 
