@@ -46,6 +46,8 @@ public class Board {
         public Board board;
         public boolean wasShot = false;
 
+
+        //In this construction, I'm setting the size of the cell, using our super class Rectangle. I am also setting the color and outline of each cell.
         public Cell(Board board, int x, int y) {
             super(30,30);
             this.board = board;
@@ -54,6 +56,28 @@ public class Board {
             setFill(Color.GRAY);
             setStroke(Color.BLACK);
 
+        }
+
+        //In this method, we are defining what happens when we take a shot or when we try and guess the enemy ship.
+        //We are changing the color of the cell to black, to show that it was already chosen and we are checking to see if there is a ship part in that cell.
+        //If there is a ship part, and we succesfully hit a ship, we call the shipHit method in ship, to decrease the health and then we check to see if the ship is still alive or not.
+        //If the ship is no longer alive, we decrease the amount of ships on the board by 1.
+        public boolean takeAShot(){
+            wasShot = true;
+            setFill(Color.BLACK);
+
+            if (ship != null){
+                ship.shipHit();
+                setFill(Color.RED);
+
+                if(!(ship.isAlive)){
+                    board.ships--;
+                }
+
+                return true;
+            }
+
+            return false;
         }
     }
 
