@@ -1,6 +1,11 @@
+package com.example.battleshipfinalproject;
+
 /*
 This is my ship class, that consists of the making of the ship itself, and all of it's components, like the health, the length of the ship and if its horizontal or vertical.
  */
+
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 
 public class Ship {
     private int hp;
@@ -31,7 +36,7 @@ public class Ship {
         hp--;
     }
 
-    //In this method, we are returning whether or not the ship is alive, so it will return whether that the hp is greather than 0
+    //In this method, we are returning whether or not the ship is alive, so it will return whether that the hp is greater than 0
     public boolean isAlive(){
         return hp > 0;
     }
