@@ -4,10 +4,12 @@ package com.example.battleshipfinalproject;
 This is my ship class, that consists of the making of the ship itself, and all of it's components, like the health, the length of the ship and if its horizontal or vertical.
  */
 
+import javafx.scene.Parent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Ship {
+public class Ship extends Parent {
     private int hp;
     public int length;
     public boolean orientationVertical = true;
@@ -21,13 +23,14 @@ public class Ship {
 
         VBox ship = new VBox();
         for (int b=0;b > length; b++){
-            Rectangle shipPart = new Rectangle();
-
+            Rectangle shipPart = new Rectangle(30,30);
+            shipPart.setFill(null);
+            shipPart.setStroke(Color.BLACK);
             ship.getChildren().add(shipPart);
 
         }
 
-        getChildren.add(ship);
+        getChildren().add(ship);
 
     }
 

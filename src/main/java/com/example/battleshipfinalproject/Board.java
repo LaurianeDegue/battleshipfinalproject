@@ -5,6 +5,7 @@ package com.example.battleshipfinalproject;
     As well as, creating the board itself, with multiple VBoxes and HBoxes. I will also be defining the placing of the ships
  */
 
+import javafx.scene.Parent;
 import javafx.scene.effect.Light;
 import javafx.scene.shape.Rectangle;
 import javafx.event.EventHandler;
@@ -17,7 +18,7 @@ import javafx.geometry.Point2D;
 import java.util.ArrayList;
 
 
-public class Board {
+public class Board extends Parent {
     private VBox board = new VBox();
     public int ships = 5;
     private boolean enemy = false;
@@ -65,7 +66,9 @@ public class Board {
         return x >= 0 && x <= 10 && y >= 0 && y <= 10;
     }
 
-
+    //In this method, we are checking to see the neighbours of a select cell. We are recording the four cells, surrounding our specific cell.
+    //Afterwards, we are adding every cell that is valid, according to our isValidCell method, and then we are adding them to our neighbour array.
+    //And at the end, we return our array, inside of a Cell type array
     public Cell[] getNeighbours(int x, int y){
         Point2D[] cells = new Point2D[]{
             new Point2D(x, y -1),
@@ -88,7 +91,9 @@ public class Board {
     }
 
 
-
+    //In this method, we are checking to make sure that we can place our ship inside of a cell.
+    //We will execute multiple tests, and at the end we will return true, if the cell has passed all of the tests or
+    //false if it failed atleast one of them.
     private boolean canPlaceShip(Ship ship, int x, int y){
         int shipLength = ship.length;
 
@@ -158,6 +163,11 @@ public class Board {
         return true;
     }
 
+    //In this method, we are placing the ship, first we are checking to see if it's possible to place the ship, using our
+    //canPlaceShip method and then we are, getting the length of the ship. Afterwards, we check the orientation that she
+    // ship will be taking and then we create a loop that will cycle through all the cells, horizontally or vertically,
+    //depending on the orientation and it will assign every single cell it interacts with as a ship and also color it,
+    // to show that it has been selected.
     public boolean placeShip(Ship ship, int x, int y){
 
         if(canPlaceShip(ship, x, y)){
@@ -223,14 +233,14 @@ public class Board {
         //We are changing the color of the cell to black, to show that it was already chosen and we are checking to see if there is a ship part in that cell.
         //If there is a ship part, and we successfully hit a ship, we call the shipHit method in ship, to decrease the health and then we check to see if the ship is still alive or not.
         //If the ship is no longer alive, we decrease the amount of ships on the board by 1.
-        //We are also changing the color of the cell to red, if we successfully hit a ship.
+        //We are also changing the color of the cell to dark blue, if we successfully hit a ship.
         public boolean successfulShot(){
             wasShot = true;
             setFill(Color.BLACK);
 
             if (ship != null){
                 ship.shipHit();
-                setFill(Color.RED);
+                setFill(Color.DARKBLUE);
 
                 if(!(ship.isAlive())){
                     board.ships--;
