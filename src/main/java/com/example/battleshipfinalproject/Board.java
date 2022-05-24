@@ -6,7 +6,6 @@ package com.example.battleshipfinalproject;
  */
 
 import javafx.scene.Parent;
-import javafx.scene.effect.Light;
 import javafx.scene.shape.Rectangle;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
