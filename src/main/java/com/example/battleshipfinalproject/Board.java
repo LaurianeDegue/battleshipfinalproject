@@ -49,7 +49,7 @@ public class Board extends Parent {
     //We cast everything to our class Cell.
     public Cell getCell(int x, int y){
 
-        return (Cell)((HBox)board.getChildren().get(y)).getChildren().get(x);
+        return (Cell)(((HBox)board.getChildren().get(y)).getChildren().get(x));
     }
 
     //In this method we are selecting our cell and then, calling our other isValidCell method, and getting both the x and the y, to be able to check whether its valid or not.
@@ -62,7 +62,7 @@ public class Board extends Parent {
     //0 and 10 being the length of our board, both horizontally and vertically. We are checking to see if the cell is indeed within the board's parameters.
     public boolean isValidCell(int x, int y){
 
-        return x >= 0 && x <= 10 && y >= 0 && y <= 10;
+        return x >= 0 && x < 10 && y >= 0 && y < 10;
     }
 
     //In this method, we are checking to see the neighbours of a select cell. We are recording the four cells, surrounding our specific cell.
