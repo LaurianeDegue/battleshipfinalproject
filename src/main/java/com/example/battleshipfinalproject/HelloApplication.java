@@ -1,6 +1,12 @@
 package com.example.battleshipfinalproject;
 
+/*
+    In this class, I will be actually creating the game, as well as the other aspects of my stage, like my user menu,
+    with instructions, a scoreboard and two buttons for quit or reset.
+ */
+
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -10,26 +16,37 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import org.kordamp.bootstrapfx.BootstrapFX;
 import java.io.IOException;
 import java.util.Random;
 
-public class HelloApplication extends Application {
+public class HelloApplication extends Application implements ButtonInterface {
     private boolean running = false;
     private boolean AITurn = false;
     private int totalShipsPerBoard = 5;
     private Random random = new Random();
     private Board playerBoard, AIBoard;
     private Alert alert;
-    private VBox boards = new VBox();
-    private VBox userMenu = new VBox();
-
+    private Group gameBoard;
+    private Button resetBtn;
+    private Button quitButton;
+    private int AIScore = 0;
+    private int playerScore = 0;
+    private Text enemyScore;
+    private Text yourScore;
 
     private Parent createGame(){
         BorderPane gameStage = new BorderPane();
         gameStage.setPrefSize(800, 700);
+        gameStage.setMinSize(800, 700);
+        gameStage.setMaxSize(800,700);
+
 
         AIBoard = new Board(true, event -> {
 
@@ -51,6 +68,10 @@ public class HelloApplication extends Application {
                 alert.setHeaderText("You Win!");
                 alert.setContentText("You have successfully beaten your opponent.");
                 alert.showAndWait();
+
+                playerScore++;
+
+                yourScore.setText(Integer.toString(playerScore));
             }
 
             if(AITurn){
@@ -113,6 +134,10 @@ public class HelloApplication extends Application {
                 alert.setHeaderText("You Lose!");
                 alert.setContentText("It seems you were defeated.");
                 alert.showAndWait();
+
+                AIScore++;
+
+                enemyScore.setText(Integer.toString(AIScore));
             }
 
         }
@@ -135,44 +160,102 @@ public class HelloApplication extends Application {
 
     }
 
+    @Override
+    public Button refreshButton() {
+
+        resetBtn = new Button("Restart");
+        resetBtn.getStyleClass().addAll("btn", "btn-warning");
+        resetBtn.setOnAction(e -> {
+            gameBoard.getChildren().clear();
+
+            totalShipsPerBoard = 5;
+            playerBoard.ships = 5;
+            AIBoard.ships = 5;
+            running = false;
+            gameBoard.getChildren().add(createGame());
+        });
+
+        return resetBtn;
+    }
+
+    @Override
+    public Button quitButton() {
+        quitButton = new Button("Quit");
+        quitButton.setOnAction(e -> {
+            System.exit(0);
+        });
+        quitButton.getStyleClass().addAll("btn", "btn-danger");
+
+        return quitButton;
+    }
+
+
 
     @Override
     public void start(Stage stage) throws IOException {
         stage.setTitle("JavaFX Battleship");
 
-        Button quitButton = new Button("Quit");
-        quitButton.setOnAction(e -> {
-            System.exit(0);
-        });
+        gameBoard = new Group(createGame());
 
-        quitButton.getStyleClass().addAll("btn", "btn-success");
-        Group gameBoard = new Group(createGame());
-        Group buttons = new Group(quitButton);
-        quitButton.setAlignment(Pos.CENTER_LEFT);
+        HBox buttons = new HBox(10, quitButton(), refreshButton());
 
-        Label enemyBoard = new Label("Enemy Board: ");
-        enemyBoard.setAlignment(Pos.CENTER_LEFT);
-        enemyBoard.setMaxWidth(200);
-        enemyBoard.setMinHeight(350);
+        Label enemyBoardLbl = new Label("Enemy Board: ");
 
-        Label yourBoard = new Label("Your Board: ");
-        yourBoard.setAlignment(Pos.CENTER_LEFT);
-        yourBoard.setMinHeight(350);
-        yourBoard.setMaxWidth(200);
+        Label yourBoardLbl = new Label("Your Board: ");
+        HBox enemyBoard = new HBox();
+        enemyBoard.getChildren().add(enemyBoardLbl);
+        enemyBoard.setAlignment(Pos.CENTER);
+        HBox yourBoard = new HBox();
+        yourBoard.getChildren().add(yourBoardLbl);
+        yourBoard.setAlignment(Pos.CENTER);
 
-        VBox boardTitles = new VBox();
-        boardTitles.getChildren().addAll(enemyBoard, yourBoard);
+        GridPane board = new GridPane();
+        board.setAlignment(Pos.CENTER);
+        board.addColumn(1, enemyBoard, gameBoard, yourBoard);
 
-        HBox board = new HBox();
+        Text instructions = new Text("Basic instructions:\n "
+                                    + "Right-click for horizontal ship.\n" +
+                                      "Left-click for vertical ship.");
 
-        board.getChildren().addAll(boardTitles, gameBoard, buttons);
+        instructions.setStyle("-fx-font-size: 15px");
 
 
-        Scene scene = new Scene(board);
+        GridPane scoreBoard = new GridPane();
+
+        scoreBoard.setVgap(15);
+        scoreBoard.setHgap(15);
+
+
+        scoreBoard.setAlignment(Pos.CENTER);
+
+        scoreBoard.setStyle("-fx-font-size: 30px");
+
+
+        Text enemy = new Text("AI");
+        Text player = new Text("You");
+        enemyScore = new Text(Integer.toString(AIScore));
+        yourScore = new Text(Integer.toString(playerScore));
+        yourScore.setTextAlignment(TextAlignment.CENTER);
+
+        scoreBoard.add(enemy, 0, 0);
+        scoreBoard.add(player, 1, 0);
+        scoreBoard.add(enemyScore, 0, 1);
+        scoreBoard.add(yourScore, 1,1);
+
+
+        VBox userMenu = new VBox(25,instructions, scoreBoard, buttons);
+        userMenu.setAlignment(Pos.CENTER);
+        userMenu.setPadding(new Insets(50));
+
+
+        HBox finalBoard = new HBox();
+        finalBoard.getChildren().addAll(board, userMenu);
+
+
+        Scene scene = new Scene(finalBoard);
+        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
         stage.setScene(scene);
         stage.show();
-
-
     }
 
     public static void main(String[] args) {
