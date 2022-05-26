@@ -41,6 +41,10 @@ public class HelloApplication extends Application implements ButtonInterface {
     private Text enemyScore;
     private Text yourScore;
 
+    /*
+        In this method, I am creating the game itself, as well as calling the AIMove method, so that they can generate an action.
+        I am also placing the user boats and checking the status of the amount of boats on the board to track the winner.
+     */
     private Parent createGame(){
         BorderPane gameStage = new BorderPane();
         gameStage.setPrefSize(800, 700);
@@ -112,7 +116,10 @@ public class HelloApplication extends Application implements ButtonInterface {
         return gameStage;
     }
 
-
+    /*
+    In this method, we're randomly generating an x and a y, as coordinates for a cell for the enemy to select, and we are checking
+    to see if we hit a boat and if the player board still has ships, to determine whether the player lost or not.
+     */
     private void AIMove(){
 
         while(AITurn){
@@ -144,6 +151,9 @@ public class HelloApplication extends Application implements ButtonInterface {
     }
 
 
+    /*
+    In this method, we are generating the enemy ships as well as changing the status of the game to running.
+     */
     private void startGame(){
         int enemyShips = 5;
 
@@ -160,6 +170,10 @@ public class HelloApplication extends Application implements ButtonInterface {
 
     }
 
+    /*
+    In this method we are creating a restart button, that will completely clear the board, as well as our previous data
+    and let us restart with a clean slate.
+     */
     @Override
     public Button refreshButton() {
 
@@ -178,6 +192,9 @@ public class HelloApplication extends Application implements ButtonInterface {
         return resetBtn;
     }
 
+    /*
+    In this method we are making a button that will close the application.
+     */
     @Override
     public Button quitButton() {
         quitButton = new Button("Quit");
@@ -191,6 +208,9 @@ public class HelloApplication extends Application implements ButtonInterface {
 
 
 
+    /*
+    In this method we are styling the stage as well as creating labels and user interfaces.
+     */
     @Override
     public void start(Stage stage) throws IOException {
         stage.setTitle("JavaFX Battleship");
